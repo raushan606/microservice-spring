@@ -23,11 +23,11 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven Order-Service
-      run: mvn -B package --file order-service/pom.xml
+      run: mvn clean install order-service/pom.xml
       
     - name: Build with Maven Inventory-Service
-      run: mvn -B package --file inventory-service/pom.xml
+      run: mvn clean install inventory-service/pom.xml
     
     - name: Build with Maven Product-Service
-      run: mvn -B package --file product-service/pom.xml
+      run: mvn clean install product-service/pom.xml
 
