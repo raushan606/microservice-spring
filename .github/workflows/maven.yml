@@ -22,5 +22,12 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: maven
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
+    - name: Build with Maven Order-Service
+      run: mvn -B package --file order-service/pom.xml
+      
+    - name: Build with Maven Inventory-Service
+      run: mvn -B package --file inventory-service/pom.xml
+    
+    - name: Build with Maven Product-Service
+      run: mvn -B package --file product-service/pom.xml
+
