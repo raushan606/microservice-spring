@@ -1,6 +1,12 @@
-/target/
+target/
+target
+/target
 !.mvn/wrapper/maven-wrapper.jar
 /target/
+inventory-service/target
+inventory-service/target/
+*.class
+*.jar
 .class
 ### STS ###
 .apt_generated
@@ -11,6 +17,13 @@
 .springBeans
 .sts4-cache
 
+*/target
+*target/
+*/target/
+*target
+
+
+*.idea
 ### IntelliJ IDEA ###
 .idea
 *.iws
@@ -25,4 +38,4 @@
 /nbdist/
 /.nb-gradle/
 *.gz
-/totum-analytics/instrumentReturnsV5.del
+
