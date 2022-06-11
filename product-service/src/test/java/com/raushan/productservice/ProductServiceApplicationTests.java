@@ -22,34 +22,10 @@ import java.math.BigDecimal;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-@Testcontainers
-@AutoConfigureMockMvc
 class ProductServiceApplicationTests {
 
-    @Container
-    static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:4.4.2");
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @DynamicPropertySource
-    static void setProperties(DynamicPropertyRegistry dynamicPropertyRegistry) {
-        dynamicPropertyRegistry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
-    }
-
     @Test
-    void shouldCreateProduct() throws Exception {
-
-        ProductRequest productRequest = getProductRequest();
-        String requestString = objectMapper.writeValueAsString(productRequest);
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/product").contentType(MediaType.APPLICATION_JSON).content(requestString)).andExpect(status().isCreated());
-    }
-
-    private ProductRequest getProductRequest() {
-        return ProductRequest.builder().name("Iphone 13").description("apple phone").price(BigDecimal.valueOf(1200)).build();
+    void contextLoads() {
     }
 
 }

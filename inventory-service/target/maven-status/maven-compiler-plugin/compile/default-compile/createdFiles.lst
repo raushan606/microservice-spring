@@ -1,0 +1,5 @@
+com\raushan\inventoryservice\InventoryController.class
+com\raushan\inventoryservice\InventoryServiceApplication.class
+com\raushan\inventoryservice\model\Inventory.class
+com\raushan\inventoryservice\repository\InventoryRepository.class
+com\raushan\inventoryservice\service\InventoryService.class

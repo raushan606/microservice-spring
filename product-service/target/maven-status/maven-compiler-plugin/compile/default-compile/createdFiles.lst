@@ -1,0 +1,10 @@
+com\raushan\productservice\dto\ProductResponse$ProductResponseBuilder.class
+com\raushan\productservice\model\Product$ProductBuilder.class
+com\raushan\productservice\dto\ProductRequest$ProductRequestBuilder.class
+com\raushan\productservice\controller\ProductController.class
+com\raushan\productservice\ProductServiceApplication.class
+com\raushan\productservice\repository\ProductRepository.class
+com\raushan\productservice\service\ProductService.class
+com\raushan\productservice\dto\ProductResponse.class
+com\raushan\productservice\model\Product.class
+com\raushan\productservice\dto\ProductRequest.class
