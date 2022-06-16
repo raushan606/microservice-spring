@@ -1,13 +1,9 @@
+HELP.md
 target/
-target
-/target
 !.mvn/wrapper/maven-wrapper.jar
-/target/
-inventory-service/target
-inventory-service/target/
-*.class
-*.jar
-.class
+!**/src/main/**/target/
+!**/src/test/**/target/
+
 ### STS ###
 .apt_generated
 .classpath
@@ -17,13 +13,6 @@ inventory-service/target/
 .springBeans
 .sts4-cache
 
-*/target
-*target/
-*/target/
-*target
-
-
-*.idea
 ### IntelliJ IDEA ###
 .idea
 *.iws
@@ -32,10 +21,13 @@ inventory-service/target/
 
 ### NetBeans ###
 /nbproject/private/
-/build/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
-*.gz
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
 
+### VS Code ###
+.vscode/
