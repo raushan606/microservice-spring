@@ -7,6 +7,8 @@ import com.raushan.orderservice.model.Order;
 import com.raushan.orderservice.model.OrderLineItems;
 import com.raushan.orderservice.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cloud.sleuth.Span;
+import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -22,6 +24,7 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final WebClient.Builder webClientBuilder;
+    private final Tracer tracer;
 
 
     public String placeOrder(OrderRequest orderRequest) {
@@ -42,25 +45,32 @@ public class OrderService {
                 .map(OrderLineItems::getSkuCode)
                 .toList();
 
-        // Call Inventory Service and place order if product is in stock
-        InventoryResponse[] inventoryResponses = webClientBuilder.build()
-                .get()
-                .uri("http://inventory-service/api/inventory", uriBuilder -> uriBuilder.queryParam("skuCode", skuCodes)
-                        .build())
-                .retrieve()
-                .bodyToMono(InventoryResponse[].class)
-                .block();
+        Span inventoryServiceLookup = tracer.nextSpan()
+                .name("InventoryServiceLookup");
+        try (Tracer.SpanInScope spanInScope = tracer.withSpan(inventoryServiceLookup.start())) {
+            // Call Inventory Service and place order if product is in stock
+            InventoryResponse[] inventoryResponses = webClientBuilder.build()
+                    .get()
+                    .uri("http://inventory-service/api/inventory", uriBuilder -> uriBuilder.queryParam("skuCode", skuCodes)
+                            .build())
+                    .retrieve()
+                    .bodyToMono(InventoryResponse[].class)
+                    .block();
 
-        assert inventoryResponses != null;
-        Boolean isInStock = Arrays.stream(inventoryResponses)
-                .allMatch(InventoryResponse::getIsInStock);
+            assert inventoryResponses != null;
+            Boolean isInStock = Arrays.stream(inventoryResponses)
+                    .allMatch(InventoryResponse::getIsInStock);
 
-        if (Boolean.TRUE.equals(isInStock) && inventoryResponses.length == skuCodes.size()) {
-            orderRepository.save(order);
-            return "Order Placed Successfully!!";
-        } else {
-            throw new IllegalArgumentException("Product is out of Stock, Please Try again!!");
+            if (Boolean.TRUE.equals(isInStock) && inventoryResponses.length == skuCodes.size()) {
+                orderRepository.save(order);
+                return "Order Placed Successfully!!";
+            } else {
+                throw new IllegalArgumentException("Product is out of Stock, Please Try again!!");
+            }
+        } finally {
+            inventoryServiceLookup.end();
         }
+
 
     }
 
